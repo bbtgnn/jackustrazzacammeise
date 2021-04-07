@@ -15,6 +15,8 @@ export class Player {
   }
 
   playCard(): Card {
-    return this.deck.playCard();
+    const card = this.deck.playCard();
+    console.log("P", this.id, card);
+    return card;
   }
 }

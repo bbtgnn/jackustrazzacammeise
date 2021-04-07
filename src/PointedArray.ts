@@ -20,8 +20,12 @@ export class PointedArray<T> {
     return this._items.length;
   }
 
+  get current(): T {
+    return this._current ? this._current : this._items[0];
+  }
+
   get currentIndex(): number {
-    return this._items.indexOf(this._current);
+    return this._items.indexOf(this.current);
   }
 
   nextIndex(increase = 1): number {
@@ -32,13 +36,14 @@ export class PointedArray<T> {
     return this.m(this.currentIndex - decrease);
   }
 
-  get current(): T {
-    return this._current ? this._current : this._items[0];
-  }
-
-  setCurrent(index: number): T {
+  setCurrentByIndex(index: number): T {
     this._current = this._items[this.m(index)];
     return this.current;
+  }
+
+  setCurrent(item: T): T {
+    this._current = this._items[this._items.indexOf(item)];
+    return item;
   }
 
   next(increase = 1): T {
@@ -59,33 +64,19 @@ export class PointedArray<T> {
     return this.current;
   }
 
+  get items(): Array<T> {
+    return this._items;
+  }
+
   get otherItems(): PointedArray<T> {
     return new PointedArray(this._items.filter((item) => item != this.current));
   }
 
-  // increasePointer(increase = 1): PointedArray<T> {
-  //   this.pointer = this.pointer + increase;
-  //   return this;
-  // }
+  removeItem(item: T): void {
+    this._items.splice(this._items.indexOf(item), 1);
+  }
 
-  // decreasePointer(decrease = 1): PointedArray<T> {
-  //   this.pointer = this.pointer - decrease;
-  //   return this;
-  // }
-
-  // increaseItem(): T {
-  //   return this.increasePointer().currentItem;
-  // }
-
-  // decreaseItem(): T {
-  //   return this.decreasePointer().currentItem;
-  // }
-
-  // removeItem(item: T): void {
-  //   this._items.splice(this._items.indexOf(item), 1);
-  // }
-
-  // getItem(index: number): T {
-  //   return this._items[mod(index, this.length)];
-  // }
+  getItem(index: number): T {
+    return this._items[this.m(index)];
+  }
 }
