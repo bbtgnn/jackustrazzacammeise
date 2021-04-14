@@ -20,6 +20,12 @@ export function take(game: Game, card: Card) {
     //
     if (nextCard.effect == "pass") {
       checks += 1;
+      // Checking end
+      game.removeDeadPlayers();
+      if (game.isOver()) {
+        return;
+      }
+      //
       activePlayers.increase();
     }
     //
@@ -32,7 +38,13 @@ export function take(game: Game, card: Card) {
   if (checks == card.number) {
     //
     console.log("--");
-    console.log("P", game.players.current.id, "took the stack!");
+    console.log(
+      "P",
+      game.players.current.id,
+      "took:",
+      game.stack.length,
+      "cards!"
+    );
     // Adding stack cards to player
     game.players.current.deck.addCards(game.stack.cards);
     // Emptying stack
@@ -42,6 +54,11 @@ export function take(game: Game, card: Card) {
   }
   //
   else {
+    // Checking end
+    game.removeDeadPlayers();
+    if (game.isOver()) {
+      return;
+    }
     // Moving current player
     game.players.setCurrent(activePlayers.current);
     // Applying card effect

@@ -66,4 +66,45 @@ export class Game {
       take(this, card);
     }
   }
+
+  checkDeaths(): Array<Player> {
+    return this.players.items.filter((player) => {
+      return player.deck.length <= 0;
+    });
+  }
+
+  removeDeadPlayers(): void {
+    for (const player of this.checkDeaths()) {
+      this.players.removeItem(player);
+      console.log("/* P", player.id, "dies", ":( */");
+    }
+  }
+
+  isOver(): boolean {
+    if (this.players.length == 1) {
+      console.log("");
+      console.log("--------------------");
+      console.log(
+        "The game is over! Winner is:",
+        "Player",
+        this.players.items[0].id
+      );
+    }
+    return this.players.length == 1;
+  }
+
+  // checkEnd(): void {
+  //   this.removeDeadPlayers();
+  //   //
+  //   if (this.isOver()) {
+  //     console.log("");
+  //     console.log("--------------------");
+  //     console.log(
+  //       "The game is over! Winner is:",
+  //       "Player",
+  //       this.players.items[0].id
+  //     );
+  //     return;
+  //   }
+  // }
 }
